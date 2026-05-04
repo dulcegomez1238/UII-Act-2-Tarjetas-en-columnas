@@ -11,20 +11,24 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:myapp/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  testWidgets('Product display smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+    await tester.pumpWidget(const MiTiendaDeFlores());
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    // Verify that the main title is displayed.
+    expect(find.text('Conoce nuestros Productos más Vendidos'), findsOneWidget);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    // pumpAndSettle waits for frames to settle, which is useful
+    // for waiting for things like network images to load.
+    await tester.pumpAndSettle();
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // Verify that our product cards are being displayed.
+    expect(find.byType(Card), findsNWidgets(4));
+
+    // Verify that one of the product names is visible.
+    expect(find.text('Ramo Romántico'), findsOneWidget);
+    
+    // Verify that the "Añadir al carrito" buttons are present.
+    expect(find.widgetWithText(ElevatedButton, 'Añadir al carrito'), findsNWidgets(4));
   });
 }
